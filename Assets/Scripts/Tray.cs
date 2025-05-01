@@ -44,13 +44,11 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
         Vector3 desiredMove = desiredPosition - transform.position;
 
-        // Adjust desiredMove to block only if it's into an obstacle
         foreach (Vector3 normal in collisionNormals)
         {
             float dot = Vector3.Dot(desiredMove, normal);
             if (dot < 0f)
             {
-                // Remove the component that's into the collider
                 desiredMove -= Vector3.Project(desiredMove, normal);
             }
         }
@@ -87,7 +85,6 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         {
             Vector3 normal = contact.normal;
 
-            // Avoid duplicates using angle threshold
             bool alreadyStored = false;
             foreach (Vector3 stored in collisionNormals)
             {

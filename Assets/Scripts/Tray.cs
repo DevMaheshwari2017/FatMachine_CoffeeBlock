@@ -11,13 +11,14 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
     private Rigidbody rb;
     private Vector3 targetPosition;
     private bool isDragging = false;
-
+    private float maxMoveDistance = 0.5f;
     private List<Vector3> collisionNormals = new List<Vector3>();
 
     private void Start()
     {
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.useGravity = false;
@@ -25,6 +26,7 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        rb.isKinematic = false;
         isDragging = true;
         objectZ = cam.WorldToScreenPoint(transform.position).z;
         Vector3 mousePoint = Input.mousePosition;
@@ -61,13 +63,19 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         isDragging = false;
         rb.linearVelocity = Vector3.zero;
         collisionNormals.Clear();
+        rb.isKinematic = true;
     }
 
     private void FixedUpdate()
     {
         if (isDragging)
         {
-            rb.MovePosition(targetPosition);
+            Vector3 moveDelta = targetPosition - rb.position;
+            if (moveDelta.magnitude > maxMoveDistance)
+            {
+                moveDelta = moveDelta.normalized * maxMoveDistance;
+            }
+            rb.MovePosition(rb.position + moveDelta);
         }
     }
 
@@ -99,12 +107,7 @@ public class Tray : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
     {
         if (!isDragging) return;
 
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            collisionNormals.RemoveAll(n => Vector3.Angle(n, contact.normal) < 5f);
-        }
 
-        if (collisionNormals.Count == 0)
-            collisionNormals.Clear();
+        collisionNormals.Clear();
     }
 }

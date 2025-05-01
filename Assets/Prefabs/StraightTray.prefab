@@ -51,12 +51,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.0285814, y: 0.49822488, z: 1.0338347}
-  m_Center: {x: 0.52012634, y: 0.25088736, z: -0.115579}
+  m_Size: {x: 2.002794, y: 0.4865987, z: 1.0133085}
+  m_Center: {x: 0.5197269, y: 0.24507423, z: -0.119294025}
 --- !u!114 &3650691794861755161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +95,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!1001 &710356003048800297
 PrefabInstance:
   m_ObjectHideFlags: 0
